@@ -8,7 +8,7 @@ using get_post_action_task.Services;
 
 namespace TaskController.Controllers
 {
-    [Route("/lists/{id}/tasks")]
+    [Route("/lists/{listId}/tasks")]
     [ApiController]
     public class TasksController : ControllerBase
     {
@@ -19,23 +19,25 @@ namespace TaskController.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<TodoTask>> GetTasksInTaskListById(int id)
+        public ActionResult<List<TodoTask>> GetTasksInTaskListById(int listId)
         {
-            return service.GetAllTasksByListId(id);
+            return service.GetAllTasksByListId(listId);
         }
 
-        [HttpGet("")]
-        public ActionResult<List<TodoTask>> GetTasksinTaskListById(int id)
+        [HttpPost]
+        public ActionResult<List<TodoTask>> PostTask(int listId, TodoTask task)
         {
-            return service.GetAllTasksByListId(id);
+            service.AddTaskInTaskListById(listId, task);
+            return service.GetAllTasksByListId(listId);
         }
 
-        [HttpPost("")]
-        public ActionResult<List<TodoTask>> PostTModel(int id, TodoTask task)
+        [HttpDelete("{id}")]
+        public ActionResult<List<TodoTask>> DeleteTask(int listId, int id)
         {
-            service.AddTaskInTaskListById(id, task);
+            
             return null;
         }
+        
         
     }
 }

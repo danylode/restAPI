@@ -37,7 +37,7 @@ namespace get_post_action_task.Controllers
             return service.GetAllTaskLists();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("")]
         public ActionResult<List<TaskList>> DeleteTaskList(int id)
         {
             service.DeleteTaskListById(id);
@@ -51,7 +51,7 @@ namespace get_post_action_task.Controllers
             return service.GetAllTaskLists();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("")]
         public ActionResult<List<TaskList>> PatchTaskList(int id, [FromQuery] TaskList list){
             return service.GetAllTaskLists();
         }
