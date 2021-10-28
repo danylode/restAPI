@@ -2,7 +2,7 @@ using System;
 
 namespace get_post_action_task.Models
 {
-    public class TodoItem
+    public class TodoTask
     {
         public int Id { get; set; }
         public string Title { get; set; }

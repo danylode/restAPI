@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using get_post_action_task.Controllers;
+using get_post_action_task.Services;
 
 namespace get_post_action_task
 {
@@ -29,7 +29,7 @@ namespace get_post_action_task
         {
 
             services.AddControllers();
-            services.AddSingleton<TodoItemController>();
+            services.AddSingleton<TodoService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "get_post_action_task", Version = "v1" });
