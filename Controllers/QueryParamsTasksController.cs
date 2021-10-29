@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace TaskController.Controllers
 {
-    [Route("/lists/{listId}/tasks")]
+    [Route("/tasks")]
     [ApiController]
-    public class TasksController : ControllerBase
+    public class QueryParamsTasksController : ControllerBase
     {
         TodoService service;
-        public TasksController(TodoService service)
+        public QueryParamsTasksController(TodoService service)
         {
             this.service = service;
         }
@@ -31,20 +31,20 @@ namespace TaskController.Controllers
             return ActionStatus(service.AddTaskInTaskListById(listId, task));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public ActionResult<List<TodoTask>> DeleteTask(int listId, int id)
         {
 
             return ActionStatus(service.DeleteTaskInTaskListById(listId, id));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult PutTodoTask(int taskList, int id, TodoTask task)
         {
             return ActionStatus(service.ReplaceTaskInTaskListById(taskList, id, task));
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch]
         public IActionResult PatchTodoTask(int listId, int id, [FromBody] JsonPatchDocument<TodoTask> list)
         {
             try

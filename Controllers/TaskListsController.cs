@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using get_post_action_task.Models;
 using get_post_action_task.Services;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace get_post_action_task.Controllers
 {
@@ -40,21 +41,25 @@ namespace get_post_action_task.Controllers
         [HttpDelete("")]
         public ActionResult<List<TaskList>> DeleteTaskList(int id)
         {
-            service.DeleteTaskListById(id);
-            return service.GetAllTaskLists() ;
+            return ActionStatus(service.DeleteTaskListById(id));
         }
 
-        [HttpPut("")]
+        [HttpPut("{id}")]
         public ActionResult<List<TaskList>> PutTaskList(int id, TaskList list)
         {
-            service.ReplaceTaskListById(id, list);
-            return service.GetAllTaskLists();
+            return ActionStatus(service.ReplaceTaskListById(id, list));
         }
 
-        [HttpPatch("")]
-        public ActionResult<List<TaskList>> PatchTaskList(int id, [FromQuery] TaskList list){
-            return service.GetAllTaskLists();
+        private ActionResult ActionStatus(bool result)
+        {
+            if (result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
-
     }
 }

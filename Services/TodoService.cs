@@ -1,82 +1,126 @@
 using System;
 using System.Collections.Generic;
 using get_post_action_task.Models;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 
 namespace get_post_action_task.Services
 {
     public class TodoService
     {
-        private List<TaskList> todoList = new List<TaskList>();
+        private List<TaskList> todoLists = new List<TaskList>();
         private int lastId = 2;
 
         public TodoService()
         {
-            todoList.Add(new TaskList());
-            todoList.Add(new TaskList());
-            todoList[0].Tasks = new List<TodoTask>(){
+            todoLists.Add(new TaskList());
+            todoLists.Add(new TaskList());
+            todoLists[0].Tasks = new List<TodoTask>(){
                 new TodoTask() { Id = 1, Title = "Implement read" }
             };
-            todoList[0].lastId = 1;
-            todoList[1].Tasks = new List<TodoTask>(){
+            todoLists[0].lastId = 1;
+            todoLists[1].Tasks = new List<TodoTask>(){
                 new TodoTask() { Id = 2, Title = "Implement create" }
-            };;
-            todoList[1].lastId = 1;
+            }; ;
+            todoLists[1].lastId = 1;
         }
 
         public List<TaskList> GetAllTaskLists()
         {
-            return todoList;
+            return todoLists;
         }
 
         public List<TodoTask> GetAllTasksByListId(int listId)
         {
-            return todoList[listId].Tasks;
+            return todoLists[listId].Tasks;
         }
 
-        public TaskList PostTaskList(TaskList list)
+        public bool PostTaskList(TaskList list)
         {
             TaskList newList = list;
-            todoList.Add(newList);
+            todoLists.Add(newList);
             lastId++;
-            return todoList[lastId];
+            return true;
         }
 
-        public List<TaskList> AddTaskList(TaskList list){
-            todoList.Add(list);
-            return todoList;
-        }
-
-        public List<TodoTask> AddTaskInTaskListById(int listId, TodoTask item)
+        public bool AddTaskList(TaskList list)
         {
-            TaskList list = todoList[listId];
-            list.Tasks.Add(item);
-            list.lastId++;
-            return list.Tasks;
+            todoLists.Add(list);
+            return true;
         }
 
-        public List<TaskList> ReplaceTaskListById(int taskListId, TaskList newList)
+        public bool AddTaskInTaskListById(int listId, TodoTask item)
         {
-            todoList[taskListId] = newList;
-            return todoList;
+            try
+            {
+                TaskList list = todoLists[listId];
+                list.Tasks.Add(item);
+                list.lastId++;
+                return true;
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return false;
+            }
         }
 
-        public List<TodoTask> ReplaceTaskInTaskListById(int taskListId, int taskId, TodoTask newTask)
+        public bool ReplaceTaskListById(int taskListId, TaskList newList)
         {
-            todoList[taskListId].Tasks[taskId] = newTask;
-            return todoList[taskListId].Tasks;
+            try
+            {
+                todoLists[taskListId] = newList;
+                return true;
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return false;
+            }
         }
 
-        public List<TaskList> DeleteTaskListById(int id)
+        public bool ReplaceTaskInTaskListById(int taskListId, int taskId, TodoTask newTask)
         {
-            todoList.RemoveAt(id);
-            return todoList;
+            try
+            {
+                todoLists[taskListId].Tasks[taskId] = newTask;
+                return true;
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return false;
+            }
         }
 
-        public List<TodoTask> DeleteTaskInTaskListById(int taskListId, int itemId)
+        public bool DeleteTaskListById(int id)
         {
-            TaskList list = todoList[taskListId];
-            list.Tasks.RemoveAt(itemId);
-            return list.Tasks;
+            try
+            {
+
+                todoLists.RemoveAt(id);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteTaskInTaskListById(int taskListId, int itemId)
+        {
+            try
+            {
+                TaskList list = todoLists[taskListId];
+                list.Tasks.RemoveAt(itemId);
+                return true;
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return false;
+            }
+        }
+
+        public List<TaskList> PatchTaskListById(int id, TaskList list)
+        {
+            return todoLists;
         }
 
     }
