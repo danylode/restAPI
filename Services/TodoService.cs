@@ -58,7 +58,7 @@ namespace get_post_action_task.Services
                 list.lastId++;
                 return true;
             }
-            catch (IndexOutOfRangeException e)
+            catch (Exception e)
             {
                 return false;
             }
@@ -71,7 +71,7 @@ namespace get_post_action_task.Services
                 todoLists[taskListId] = newList;
                 return true;
             }
-            catch (IndexOutOfRangeException e)
+            catch (Exception e)
             {
                 return false;
             }
@@ -84,7 +84,7 @@ namespace get_post_action_task.Services
                 todoLists[taskListId].Tasks[taskId] = newTask;
                 return true;
             }
-            catch (IndexOutOfRangeException e)
+            catch (Exception e)
             {
                 return false;
             }
@@ -112,15 +112,10 @@ namespace get_post_action_task.Services
                 list.Tasks.RemoveAt(itemId);
                 return true;
             }
-            catch (IndexOutOfRangeException e)
+            catch (Exception e)
             {
                 return false;
             }
-        }
-
-        public List<TaskList> PatchTaskListById(int id, TaskList list)
-        {
-            return todoLists;
         }
 
     }

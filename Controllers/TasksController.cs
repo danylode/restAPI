@@ -25,23 +25,28 @@ namespace TaskController.Controllers
             return service.GetAllTasksByListId(listId);
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<TodoTask> GetTaskByIdInTaskListById(int listId, int id)
+        {
+            return service.GetAllTasksByListId(listId)[id];
+        }
+
         [HttpPost]
         public ActionResult<List<TodoTask>> PostTask(int listId, TodoTask task)
         {
-            return ActionStatus(service.AddTaskInTaskListById(listId, task));
+            return ActionStatus(listId, service.AddTaskInTaskListById(listId, task));
         }
 
         [HttpDelete("{id}")]
         public ActionResult<List<TodoTask>> DeleteTask(int listId, int id)
         {
-
-            return ActionStatus(service.DeleteTaskInTaskListById(listId, id));
+            return ActionStatus(listId, service.DeleteTaskInTaskListById(listId, id));
         }
 
         [HttpPut("{id}")]
-        public IActionResult PutTodoTask(int taskList, int id, TodoTask task)
+        public IActionResult PutTodoTask(int listId, int id, TodoTask task)
         {
-            return ActionStatus(service.ReplaceTaskInTaskListById(taskList, id, task));
+            return ActionStatus(listId, service.ReplaceTaskInTaskListById(listId, id, task));
         }
 
         [HttpPatch("{id}")]
@@ -50,23 +55,23 @@ namespace TaskController.Controllers
             try
             {
                 list.ApplyTo(service.GetAllTasksByListId(listId)[id]);
-                return Ok();
+                return Ok(service.GetAllTasksByListId(listId));
             }
             catch (Exception e)
             {
-                return NoContent();
+                return NotFound();
             }
         }
 
-        private ActionResult ActionStatus(bool result)
+        private ActionResult ActionStatus(int listId, bool result)
         {
             if (result)
             {
-                return Ok();
+                return Ok(service.GetAllTasksByListId(listId));
             }
             else
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 

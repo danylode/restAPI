@@ -22,24 +22,23 @@ namespace get_post_action_task.Controllers
         [HttpGet]
         public ActionResult<List<TaskList>> GetTaskLists()
         {
-            return service.GetAllTaskLists();
+            return Ok(service.GetAllTaskLists());
         }
 
         [HttpGet("{id}")]
         public ActionResult<List<TodoTask>> GetTasksByTaskListId(int id)
         {
-            return service.GetAllTasksByListId(id);
+            return Ok(service.GetAllTasksByListId(id));
         }
 
         [HttpPost("")]
         public ActionResult<List<TaskList>> PostTaskList(TaskList list)
         {
-            service.PostTaskList(list);
-            return service.GetAllTaskLists();
+            return ActionStatus(service.PostTaskList(list));
         }
 
         [HttpDelete("")]
-        public ActionResult<List<TaskList>> DeleteTaskList(int id)
+        public ActionResult DeleteTaskList(int id)
         {
             return ActionStatus(service.DeleteTaskListById(id));
         }
@@ -54,7 +53,7 @@ namespace get_post_action_task.Controllers
         {
             if (result)
             {
-                return Ok();
+                return Ok(service.GetAllTaskLists());
             }
             else
             {
